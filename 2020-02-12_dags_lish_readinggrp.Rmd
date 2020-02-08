@@ -45,4 +45,55 @@ duo(
 )
 ```
 
-# Test 
+# Materials
+
+- [Chapter in Scott Cunningham's free *Mixtape* textbook](http://scunning.com/cunningham_mixtape.pdf)
+
+---
+
+class: middle
+
+```{r}
+knitr::include_graphics("https://media.giphy.com/media/bg6nsqSbbEXDi/giphy.gif")
+```
+
+---
+
+## What are DAGs?
+
+-  ~~A turd hanging off the rear end of a sheep (caught in the fleece)~~
+
+---
+
+## What are DAGs?
+
+- A way of modeling causal effects using *graphs*
+
+- Model is represented by a set of *nodes* and *edges*
+
+- Describes all causal pathways, but also where causal pathways *don't* exist
+
+---
+class: middle
+
+.pull-left[
+### DAG with a *confounder* X
+```{r}
+knitr::include_graphics("img/dag1.png")
+```
+]
+
+--
+
+### Two paths from D to Y
+
+.pull-right[
+
+- D &rarr; Y **(direct path)**
+
+- D &larr; X &rarr; Y **(backdoor path)**
+
+]
+
+---
+
