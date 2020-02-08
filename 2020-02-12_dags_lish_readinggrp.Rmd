@@ -1,0 +1,48 @@
+---
+title: "Directed Acyclical Graphs (DAGs)"
+author: "Wei Yang Tham<br><span style = 'font-size: 70%;'>Laboratory for Innovation Sciences at Harvard</span>"
+date: "Feb 12, 2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [xaringan-themer.css, incremental.css]
+    nature:
+      titleSlideClass: [left, middle]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+  comment = NA, dpi = 300, echo = FALSE, cache = F,
+  fig.align = "center", out.width = "90%", fig.asp = 0.618)
+```
+
+```{r packages}
+library(tidyverse)
+library(magrittr)
+library(here)
+library(colorspace)
+library(patchwork)
+
+```
+
+```{r xaringan-themer, include=FALSE}
+library(xaringanthemer)
+duo(
+  primary_color = "#ffffff",
+  secondary_color = "#2a488e",
+  # secondary_color = "#4671d6",
+  # text_color = "#2C3E50",
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Montserrat", "300", "300i"),
+  code_font_google   = google_font("Droid Mono"),
+  text_font_size = "25px", 
+  text_slide_number_font_size = "0.0em"
+)
+```
+
+# Test 
