@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Directed Acyclical Graphs (DAGs)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Wei Yang Tham Laboratory for Innovation Sciences at Harvard" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="incremental.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: left, middle, title-slide
+
+# Directed Acyclical Graphs (DAGs)
+### Wei Yang Tham<br><span style="font-size: 70%;">Laboratory for Innovation Sciences at Harvard</span>
+### Feb 12, 2020
+
+---
+
+
+
+
+
+
+
+
+# Materials
+
+- [Chapter in Scott Cunningham's free *Mixtape* textbook](http://scunning.com/cunningham_mixtape.pdf)
+
+- Other materials: in addition to recommendations at the end of the *Mixtape* chapter, [Book of Why](https://www.amazon.com/Book-Why-Science-Cause-Effect/dp/046509760X), [Paper of How](https://marcfbellemare.com/wordpress/13502), [Causal Inference and Data-Fusion
+in Econometrics](https://causalai.net/r51.pdf), [Potential Outcome and Directed Acyclic Graph Approaches to Causality: Relevance for Empirical Practice in Economics](https://arxiv.org/pdf/1907.07271.pdf)
+
+---
+
+class: middle
+
+&lt;img src="https://media.giphy.com/media/bg6nsqSbbEXDi/giphy.gif" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## What are DAGs?
+
+-  ~~A turd hanging off the rear end of a sheep (caught in the fleece)~~
+
+---
+
+## What are DAGs?
+
+- A way of modeling causal effects using *graphs*
+
+- Model is represented by a set of *nodes* and *edges*
+
+- Describes all causal pathways, but also where causal pathways *don't* exist
+
+- Use theory or contextual knowledge to justify assumptions
+
+---
+class: middle
+
+.pull-left[
+### DAG with a *confounder* X
+&lt;img src="img/dag1.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+--
+
+### Two paths from D to Y
+
+.pull-right[
+
+- D &amp;rarr; Y **(direct path)**
+
+- D &amp;larr; X &amp;rarr; Y **(backdoor path)**
+
+- Backdoor path is *open*
+
+]
+
+---
+
+class: middle
+
+.pull-left[
+### DAG with *unobserved* confounder U
+&lt;img src="img/dag2_unobservedconfounder.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+--
+
+### Two paths from D to Y
+
+.pull-right[
+
+- D &amp;rarr; Y **(direct path)**
+
+- D &amp;larr; U &amp;rarr; Y **(backdoor path)**
+
+]
+
+---
+
+## Colliders *close* a backdoor path
+
+.pull-left[
+### Collider
+&lt;img src="img/dag3_collider.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+- D &amp;rarr; Y **(direct path)**
+
+- D &amp;larr; U &amp;rarr; Y **(backdoor path)**
+
+]
+
+---
+
+## Backdoor criterion
+
+- A set of variables `\(X\)` satisfies the backdoor criterion if and only if `\(X\)` blocks all backdoor paths from D to Y
+
+Another way of putting it:
+
+- We can identify the effect of D on Y if we can close all backdoor paths 
+
+---
+
+## Backdoor criterion in practice:
+
+1. Condition on confounders on open backdoor paths (i.e. control for in a regression, matching, subclassification etc.)
+
+1. DO NOT condition on colliders - backdoor path is already closed! Conditioning will open the path
+
+---
+
+## What's wrong with conditioning on a collider? 
+
+- Collider bias
+
+- Aka "Bad controls" problem (see Mostly Harmless Econometrics section 3.2.3)
+
+- Classic examples: controlling for occupation to estimate gender wage gap, no correlation between height and points scored in NBA
+
+---
+
+## Example: Are beauty and acting ability negatively correlated?
+
+&lt;img src="img/meganfox.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Draw the DAG for stars
+
+Suppose beauty and acting ability are the only two dimensions that matter for whether someone becomes a star. What does that DAG look like?
+
+---
+
+## Collider bias simulation
+
+
+
+- Suppose `beauty` and `acting` are independent draws from a normal distribution
+
+- `score = beauty + acting`
+
+- Stars are people with a `score` in the 90th percentile
+
+---
+
+## `beauty` and `acting` are uncorrelated in the general population
+
+&lt;img src="/Users/weiyangtham/Documents/WYT Projects/dag_slides/index_files/figure-html/unnamed-chunk-7-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### `Acting` and `Beauty` are negatively correlated among &lt;span style="color: #00AD9A;"&gt; Stars &lt;/span&gt;
+
+&lt;img src="/Users/weiyangtham/Documents/WYT Projects/dag_slides/index_files/figure-html/unnamed-chunk-8-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Intuition: One dimension must make up for the other
+
+Stars must have:
+- great acting skill to make up for lack of beauty or
+- great beauty to make up for poor acting
+
+- Other less trivial examples: conditioning on occupation in estimation of gender wage gap
+
+---
+
+class: inverse, middle, left
+
+## Some practice
+
+
+
+
+---
+class: inverse, middle, left
+
+## How to apply this to my work?
+
+---
+
+## "Procedure" for backdoor criterion
+
+1. Write down all paths between treatment and outcome (e.g. attending college and wages)
+
+2. Check for confounders or colliders
+
+3. Close all backdoor paths through some conditioning strategy
+
+---
+
+## Advantages
+
+Can help to think about what controls to include in a regression
+
+New identification strategies?
+
+Powerful teaching tool
+
+---
+
+## Randomization as a DAG
+
+&lt;img src="img/randomdag.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## IV as a DAG
+
+&lt;img src="img/iv_dag.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Disadvantages
+
+- What if you have 100 variables?
+
+- Relative to Potential Outcomes, hard to express certain ideas (say, monotonicity or concavity)
+
+---
+
+## Tools to implement
+
+- [`daggity`](http://www.dagitty.net/) package - available as R package and interactive tool
+
+- [DoWhy](https://microsoft.github.io/dowhy/) in Python
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
